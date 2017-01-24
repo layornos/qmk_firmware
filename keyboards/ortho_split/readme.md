@@ -1,4 +1,5 @@
-Let's Split
+Fork of Let's Split
+Modified for NEO2 Layout
 ======
 
 This readme and most of the code are from https://github.com/ahtn/tmk_keyboard/
