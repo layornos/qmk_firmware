@@ -38,6 +38,9 @@ enum planck_keycodes {
     AUDIO
 };
 
+const uint16_t PROGMEM fn_actions[] = {
+  [0] = ACTION_MODS_TAP_KEY(MOD_LCTL, KC_ESC),
+};
 // Fillers to make layering more clear
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
@@ -62,13 +65,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 {KC_LCTL, XXXXXXX, KC_LGUI, KC_LALT, KC_LSFT, KC_SPC,  KC_SPC,  KC_RALT, KC_CAPS, TO(_MOUSE), XXXXXXX,   RAISE}
 },
 
+/* NEO2 Layout
+ * ,-----------------------------------------------------------------------------------.
+ * | ESC  |   X  |   V  |   L  |   C  |   W  |   K  |   H  |   G  |   F  |   Q  | Bksp |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * | TAB  |   U  |   I  |   A  |   E  |   O  |   S  |   N  |   R  |   T  |   D  |  Y   |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * | Shift|   Ü  |   Ö  |   Ä  |   P  |   Z  |   B  |   M  |   ,  |   .  |   J  |Enter |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Ctrl | NO   | GUI  | LALT | Shift|    Space    |  L4  |  L3  | LED  | AUDIO|Raise |
+ * `-----------------------------------------------------------------------------------'
+ */
 [_NEO] = {
-{KC_ESC,  KC_X,    KC_V,    KC_L,    KC_C,    KC_W,    KC_K,    KC_H,    KC_G,    KC_F,    KC_Q,    KC_BSPC},
-{KC_TAB,  KC_U,    KC_I,    KC_A,    KC_E,    KC_O,    KC_S,    KC_N,    KC_R,    KC_T,    KC_D,    KC_Z},
-{KC_LSFT, KC_LBRC, KC_SCLN, KC_QUOT, KC_P,    KC_Y,    KC_B,    KC_M,    KC_COMM, KC_DOT,  KC_J,    KC_ENT },
-{KC_LCTL, XXXXXXX, KC_LGUI, KC_LALT, KC_LSFT, KC_SPC,  KC_SPC,  NEOMOD4,    NEOMOD3,    KC_CAPS, XXXXXXX, RAISE}
+{KC_ESC,  KC_X,    KC_V,    KC_L,    KC_C,    KC_W,    KC_K,    KC_H,    KC_G,    KC_F,    KC_Q,   KC_BSPC},
+{KC_TAB,  KC_U,    KC_I,    KC_A,    KC_E,    KC_O,    KC_S,    KC_N,    KC_R,    KC_T,    KC_D,   KC_Z},
+{KC_LSFT, KC_LBRC, KC_SCLN, KC_QUOT, KC_P,    KC_Y,    KC_B,    KC_M,    KC_COMM, KC_DOT,  KC_J,   KC_ENT },
+{F(0), XXXXXXX, KC_LGUI, KC_LALT, KC_LSFT, KC_SPC,  KC_SPC,  NEOMOD4, NEOMOD3, BACKLIT, AUDIO,  RAISE}
 },
 
+/* NEO2 Layer 3
+ * ,-----------------------------------------------------------------------------------.
+ * | ESC  | NO   |   _  |   [  |   ]  |   ^  |   !  |   <  |   >  |   =  |   &  | Bksp |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * | TAB  |   \  |   /  |   {  |   }  |   *  |   ?  |   (  |   )  |   -  |   :  |  @   |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * | Shift|   #  |   $  |   |  |   ~  |   `  |   +  |   %  |   "  |   '  |     |Enter |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Ctrl | NO   | GUI  | LALT | Shift|    Space    |  L4  |  L3  | LED  | AUDIO|Raise |
+ * `-----------------------------------------------------------------------------------'
+ */
 [_NEOMOD3] = {
 {_______,  XXXXXXX,    LSFT(KC_SLSH),   RALT(KC_8),    RALT(KC_9),    KC_GRV,    KC_EXLM,   KC_NUBS,    LSFT(KC_NUBS),    LSFT(KC_0),    LSFT(KC_6),    _______},
 {_______,  RALT(KC_MINS),    LSFT(KC_7),    RALT(KC_7),    RALT(KC_0),    LSFT(KC_RBRC),    LSFT(KC_MINS),    LSFT(KC_8),    LSFT(KC_9),    KC_SLSH,   LSFT(KC_DOT),  RALT(KC_Q)},
@@ -76,6 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 {_______, _______, _______, _______, _______, _______,  _______,  _______,    _______,    _______, _______,   _______}
 },
 
+/* NEO2 Layer 4 */
 [_NEOMOD4] = {
 {_______,  KC_PGUP,    KC_BSPC,    KC_UP,    KC_DEL,    KC_PGDN,    XXXXXXX,   KC_7,    KC_8,    KC_9,    XXXXXXX,    _______},
 
@@ -85,46 +111,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 {_______, _______, _______, _______, _______, _______,  _______,  _______,    _______,    _______, _______,   _______}
 },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* NEO2 Layer 3 if it runs on QWERTY */
 [_NEOMOD3_QWERTY_US] = {
 {_______,  XXXXXXX,    KC_UNDS,    KC_LBRC,    KC_RBRC,    KC_CIRC,    KC_EXLM,   LSFT(KC_COMM) ,    LSFT(KC_DOT),    KC_EQL,    KC_AMPR,    _______},
 {_______,  KC_BSLS,    KC_SLSH,    KC_LCBR,    KC_RCBR,    KC_ASTR,    LSFT(KC_SLSH),    KC_LPRN,    KC_RPRN,    KC_MINS,    LSFT(KC_SCLN),    KC_AT},
 {_______, KC_HASH, KC_DLR, KC_PIPE, KC_TILD,    KC_GRV,    KC_PLUS,    KC_PERC,    KC_QUOT, LSFT(KC_QUOT),  KC_SCLN,    _______},
 {_______, _______, _______, _______, _______, _______,  _______,  _______,    _______,    _______, _______,   _______}
 },
+
 /* Mouse
  * ,-----------------------------------------------------------------------------------.
- * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  | Bksp |
+ * |      |      |      |  UP  |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Del  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |   _  |   +  |   {  |   }  |  |   |
+ * |      |      |  LEFT| DOWN | RIGHT|      | WH UP| BTN1 | BTN2 |      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |ISO ~ |ISO | |      |      |Enter |
+ * |      |      |      |      |      |      |WH DWN| BTN3 | BTN4 |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      | Next | Vol- | Vol+ | Play |
+ * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_MOUSE] = {
 {XXXXXXX, XXXXXXX, XXXXXXX,    KC_MS_UP,   XXXXXXX,     XXXXXXX, XXXXXXX,       XXXXXXX,    XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX},
 {XXXXXXX, XXXXXXX, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT, XXXXXXX, KC_MS_WH_UP,   KC_MS_BTN1, KC_MS_BTN2, XXXXXXX, XXXXXXX, XXXXXXX},
 {XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,    XXXXXXX,     XXXXXXX, KC_MS_WH_DOWN, KC_MS_BTN3, KC_MS_BTN4, XXXXXXX, XXXXXXX, XXXXXXX},
-{XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,    XXXXXXX,     XXXXXXX, XXXXXXX,       XXXXXXX,    XXXXXXX,    TO(_QWERTY),  XXXXXXX, XXXXXXX}
+{XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,    XXXXXXX,     XXXXXXX, XXXXXXX,       XXXXXXX,    XXXXXXX,    XXXXXXX,  XXXXXXX, XXXXXXX}
 },
 
 /* Raise
@@ -142,7 +152,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 {KC_MINS, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC},
 {KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS},
 {_______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_NUHS, KC_NUBS, _______, _______, _______},
-{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______}
+{_______, TO(_QWERTY), TO(_NEO), _______, _______, _______, _______, _______, _______, _______, _______, _______}
 },
 
 /* Plover layer (http://opensteno.org)
@@ -300,10 +310,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
 
         case AUDIO:
+            #ifdef AUDIO_ENABLE
             music_rock_user();
+            #endif
             return false;
             break;
-
     }
     return true;
 }
@@ -319,12 +330,12 @@ void matrix_init_user(void) {
 void startup_user()
 {
     _delay_ms(20); // gets rid of tick
-    //PLAY_NOTE_ARRAY(tone_startup, false, 0);
+    PLAY_NOTE_ARRAY(tone_startup, false, 0);
 }
 
 void shutdown_user()
 {
-    //PLAY_NOTE_ARRAY(tone_goodbye, false, 0);
+    PLAY_NOTE_ARRAY(tone_goodbye, false, 0);
     _delay_ms(150);
     stop_all_notes();
 }

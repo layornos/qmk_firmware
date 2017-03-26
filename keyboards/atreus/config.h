@@ -25,13 +25,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VENDOR_ID       0xFEED
 #define PRODUCT_ID      0x6060
 #define DEVICE_VER      0x0001
-#define MANUFACTURER    Technomancy
-#define PRODUCT         Atreus
-#define DESCRIPTION     q.m.k. keyboard firmware for Atreus
+#define MANUFACTURER    Layorcorp
+#define PRODUCT         ATREUS
+#define DESCRIPTION     q.m.k.
 
 /* key matrix size */
 #define MATRIX_ROWS 4
-#define MATRIX_COLS 11
+#define MATRIX_COLS 12
 
 // Change this to how you wired your keyboard
 // COLS: Left to right, ROWS: Top to bottom
@@ -44,8 +44,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 #   define UNUSED_PINS
 #elif defined(ATREUS_TEENSY2)
-#   define MATRIX_ROW_PINS { D0, D1, D2, D3 }
-#   define MATRIX_COL_PINS { F6, F5, F4, B7, B6, B5, B4, B3, B2, B1, B0 }
+#   define MATRIX_ROW_PINS { B6, B5, D2, D1 }
+#   define MATRIX_COL_PINS { F0, F1, F4, F5, F6, F7, D0, B7, B3, B2, B1, B0 }
+
+  //F7, F6, F5, F4, F1, F0, D0, B7, B3, B2, B1, B0 }
+
 #   define UNUSED_PINS
 #endif
 
