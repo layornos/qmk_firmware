@@ -35,25 +35,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Change this to how you wired your keyboard
 // COLS: Left to right, ROWS: Top to bottom
-#if defined(ATREUS_ASTAR)
-#   define MATRIX_ROW_PINS { D0, D1, D3, D2 }
-#if defined(PCBDOWN)
-#   define MATRIX_COL_PINS { B7, D6, F7, F6, B6, D4, E6, B4, B5, C6, D7 }
-#else
-#   define MATRIX_COL_PINS { D7, C6, B5, B4, E6, D4, B6, F6, F7, D6, B7 }
-#endif
-#   define UNUSED_PINS
-#elif defined(ATREUS_TEENSY2)
-#   define MATRIX_ROW_PINS { B6, B5, D2, D1 }
-#   define MATRIX_COL_PINS { F0, F1, F4, F5, F6, F7, D0, B7, B3, B2, B1, B0 }
+#define MATRIX_ROW_PINS { B6, B2, B4, B5 }
+#define MATRIX_COL_PINS { F4, F5, F6, F7, B1, B3, E6, D7, C6, D4, D0, D1 }
 
-  //F7, F6, F5, F4, F1, F0, D0, B7, B3, B2, B1, B0 }
-
-#   define UNUSED_PINS
-#endif
 
 /* COL2ROW or ROW2COL */
-#define DIODE_DIRECTION COL2ROW
+#define DIODE_DIRECTION ROW2COL
 
 /* define if matrix has ghost */
 //#define MATRIX_HAS_GHOST

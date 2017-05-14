@@ -7,33 +7,56 @@
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
-#define _DEFAULT 0
-#define _NAV 1
-#define _RESET 2
+#define _NEO 0
+#define _NEOMOD3 1
+#define _NEOMOD4 2
+#define _RAISE 3
+
+enum planck_keycodes {
+    NEO = SAFE_RANGE,
+    NEOMOD3,
+    NEOMOD4,
+    RAISE
+};
+
+const uint16_t PROGMEM fn_actions[] = {
+  [0] = ACTION_MODS_TAP_KEY(MOD_LCTL, KC_ESC),
+};
+// Fillers to make layering more clear
+#define _______ KC_TRNS
+#define XXXXXXX KC_NO
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-[_DEFAULT] = { /* qwerty */
-		{ KC_ESC,   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,  KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS },
-		{ KC_BSLS,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_TRNS,  KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RBRC },
-		{ KC_TAB,   KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_TRNS,  KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT },
-		{ KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_DELT,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_LBRC },
-		{ KC_LCTL,  KC_LGUI, KC_LALT, KC_GRV,  MO(_NAV),KC_BSPC, KC_ENT,   KC_SPC,  KC_EQL,  KC_MINS, KC_QUOT, KC_ENT,  KC_RGUI }
+[_NEO] = { /* neo2 */
+		{ KC_ESC,   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,  KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC },
+		{ KC_ESC,   KC_X,    KC_V,    KC_L,    KC_C,    KC_W,    KC_TRNS,  KC_K,    KC_H,    KC_G,    KC_F,    KC_Q,    KC_BSPC },
+		{ KC_TAB,   KC_U,    KC_I,    KC_A,    KC_E,    KC_O,    KC_TRNS,  KC_S,    KC_N,    KC_R,    KC_T,    KC_D,    KC_Z },
+		{ KC_LSFT,  KC_LBRC, KC_SCLN, KC_QUOT, KC_P,    KC_Y,    KC_LSFT,  KC_B,    KC_M,    KC_COMM, KC_DOT,  KC_J,    KC_RSFT },
+		{ F(0),     XXXXXXX, XXXXXXX, XXXXXXX, KC_LGUI, KC_LALT, KC_SPC,   NEOMOD4, NEOMOD3, XXXXXXX, XXXXXXX, XXXXXXX, KC_ENT }
 },
 
-[_NAV] = { 
-		{ TO(_DEFAULT),  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_TRNS,  KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11  },
-		{ KC_TRNS,       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_F12,  KC_TRNS, KC_UP,   KC_TRNS, KC_TRNS, KC_TRNS },
-		{ KC_TRNS,       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS },
-		{ TO(_RESET),    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS },
-		{ KC_TRNS,       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS }
+[_NEOMOD3] = {
+	  { KC_TRNS,  KC_TRNS,        KC_TRNS,         KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,  KC_TRNS, KC_TRNS,    KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS },
+		{ KC_TRNS,  XXXXXXX,        LSFT(KC_SLSH),   RALT(KC_8),    RALT(KC_9),    KC_GRV,        KC_TRNS,  KC_EXLM, KC_NUBS,    LSFT(KC_NUBS),  LSFT(KC_0),    LSFT(KC_6),    XXXXXXX },
+		{ KC_TRNS,  RALT(KC_MINS),  LSFT(KC_7),      RALT(KC_7),    RALT(KC_0),    LSFT(KC_RBRC), KC_TRNS,  KC_F12,  KC_TRNS,    KC_UP,          KC_TRNS,       KC_TRNS,       KC_TRNS },
+		{ KC_TRNS,  KC_NUHS,        LSFT(KC_4),      RALT(KC_NUBS), RALT(KC_RBRC), LSFT(KC_EQL),  KC_TRNS,  KC_RBRC, LSFT(KC_5), LSFT(KC_2),     LSFT(KC_NUHS), LSFT(KC_COMM), KC_TRNS },
+		{ KC_TRNS,  KC_TRNS,        KC_TRNS,         KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,  KC_TRNS, KC_TRNS,    KC_TRNS,        KC_TRNS,       KC_TRNS,       KC_TRNS }
 },
 
-[_RESET] = {
-		{ TO(_DEFAULT),  KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  ,  KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO   },
-		{ KC_NO  ,       KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  ,  KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO   },
-		{ KC_NO  ,       KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  ,  KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO   },
-		{ KC_NO  ,       KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  ,  KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO   },
-		{ KC_NO  ,       KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  ,  KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , RESET }
+[_NEOMOD4] = {
+		{ KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO   },
+		{ KC_NO,  KC_PGUP, KC_BSPC, KC_UP,   KC_DEL,  KC_PGDN, KC_NO,  XXXXXXX,  KC_7,  KC_8,  KC_9,  XXXXXXX, KC_NO },
+		{ KC_NO,  KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END,  KC_NO,  XXXXXXX,  KC_4,  KC_5,  KC_6,  XXXXXXX, KC_NO },
+		{ KC_NO,  XXXXXXX, KC_END,  KC_INS,  KC_ENT,  KC_WBAK, KC_NO,  XXXXXXX,  KC_1,  KC_2,  KC_3,  XXXXXXX, KC_NO },
+		{ KC_NO,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,  KC_NO,    KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO }
+},
+
+[_RAISE] = {
+		{ KC_MINS,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,  KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC },
+		{ KC_DEL,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_TRNS,  KC_F6,   KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS },
+		{ KC_TRNS,  KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_TRNS,  KC_F12,  KC_NUHS, KC_NUBS, KC_TRNS, KC_TRNS, KC_TRNS },
+		{ KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS },
+		{ KC_TRNS,  KC_TRNS, TO(_NEO), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS }
 }
 
 
@@ -50,22 +73,44 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 
-const uint16_t PROGMEM fn_actions[] = {
+void persistant_default_layer_set(uint16_t default_layer) {
+    eeconfig_update_default_layer(default_layer);
+    default_layer_set(default_layer);
+}
 
-};
-
-const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
-{
-	// MACRODOWN only works in this function
-	switch (id) {
-	case 0:
-		if (record->event.pressed) {
-			register_code(KC_RSFT);
-		}
-		else {
-			unregister_code(KC_RSFT);
-		}
-		break;
-	}
-	return MACRO_NONE;
-};
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) 	{
+        case NEO:
+            if (record->event.pressed) {
+                persistant_default_layer_set(1UL<<_NEO);
+                layer_on(_NEO);
+            }
+            return false;
+            break;
+        case NEOMOD3:
+            if (record->event.pressed) {
+                layer_on(_NEOMOD3);
+            } else {
+                layer_off(_NEOMOD3);
+            }
+            return false;
+            break;
+        case NEOMOD4:
+            if (record->event.pressed) {
+                layer_on(_NEOMOD4);
+            } else {
+                layer_off(_NEOMOD4);
+            }
+            return false;
+            break;
+        case RAISE:
+            if (record->event.pressed) {
+                layer_on(_RAISE);
+            } else {
+                layer_off(_RAISE);
+            }
+            return false;
+            break;
+    }
+    return true;
+}
