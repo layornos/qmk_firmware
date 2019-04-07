@@ -1,12 +1,25 @@
+/* Copyright 2016 Jack Humbert
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "process_combo.h"
 #include "print.h"
 
 
-#define COMBO_TIMER_ELAPSED -1
-
-
 __attribute__ ((weak))
-combo_t key_combos[] = {
+combo_t key_combos[COMBO_COUNT] = {
 
 };
 
@@ -49,7 +62,7 @@ static bool process_single_combo(combo_t *combo, uint16_t keycode, keyrecord_t *
     if (-1 == (int8_t)index) return false;
 
     /* The combos timer is used to signal whether the combo is active */
-    bool is_combo_active = COMBO_TIMER_ELAPSED == combo->timer ? false : true;
+    bool is_combo_active = combo->is_active;
 
     if (record->event.pressed) {
         KEY_STATE_DOWN(index);
@@ -57,9 +70,10 @@ static bool process_single_combo(combo_t *combo, uint16_t keycode, keyrecord_t *
         if (is_combo_active) {
             if (ALL_COMBO_KEYS_ARE_DOWN) { /* Combo was pressed */
                 send_combo(combo->keycode, true);
-                combo->timer = COMBO_TIMER_ELAPSED;
+                combo->is_active = false;
             } else { /* Combo key was pressed */
                 combo->timer = timer_read();
+                combo->is_active = true;
 #ifdef COMBO_ALLOW_ACTION_KEYS
                 combo->prev_record = *record;
 #else
@@ -83,6 +97,7 @@ static bool process_single_combo(combo_t *combo, uint16_t keycode, keyrecord_t *
             send_keyboard_report();
             unregister_code16(keycode);
 #endif
+            combo->is_active = false;
             combo->timer = 0;            
         }
 
@@ -90,6 +105,7 @@ static bool process_single_combo(combo_t *combo, uint16_t keycode, keyrecord_t *
     }
 
     if (NO_COMBO_KEYS_ARE_DOWN) {
+        combo->is_active = true;
         combo->timer = 0;
     }
 
@@ -111,15 +127,19 @@ bool process_combo(uint16_t keycode, keyrecord_t *record)
 void matrix_scan_combo(void)
 {
     for (int i = 0; i < COMBO_COUNT; ++i) {
+        // Do not treat the (weak) key_combos too strict.
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Warray-bounds"
         combo_t *combo = &key_combos[i];
-        if (combo->timer && 
-            combo->timer != COMBO_TIMER_ELAPSED && 
+        #pragma GCC diagnostic pop
+        if (combo->is_active &&
+            combo->timer &&
             timer_elapsed(combo->timer) > COMBO_TERM) {
-            
+
             /* This disables the combo, meaning key events for this
              * combo will be handled by the next processors in the chain 
              */
-            combo->timer = COMBO_TIMER_ELAPSED;
+            combo->is_active = false;
 
 #ifdef COMBO_ALLOW_ACTION_KEYS
             process_action(&combo->prev_record, 

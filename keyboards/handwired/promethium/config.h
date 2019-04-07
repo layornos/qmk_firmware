@@ -15,8 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#pragma once
 
 #include "config_common.h"
 
@@ -35,12 +34,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DESCRIPTION
 
 /* key matrix size */
-#define MATRIX_ROWS 8
 #define MATRIX_COLS 6
+#define MATRIX_ROWS 9
 
 /* default pin-out */
-#define MATRIX_COL_PINS { B6, B7, D6, C7, F6, F7 }
-#define MATRIX_ROW_PINS { D7, C6, D0, D1, F5, F4, F1, F0 }
+#define MATRIX_COL_PINS { F4, F1, F0, D6, D0, D1 }
+#define MATRIX_ROW_PINS { F5, F6, F7 }
+#define TRACKPOINT_PINS { B7, B6, D7 }
 #define UNUSED_PINS
 
 /*
@@ -95,7 +95,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* key combination for command */
 #define IS_COMMAND() ( \
-    keyboard_report->mods == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT) | MOD_BIT(KC_LCTRL) | MOD_BIT(KC_RCTRL)) \
+    get_mods() == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT) | MOD_BIT(KC_LCTRL) | MOD_BIT(KC_RCTRL)) \
 )
 
 /* control how magic key switches layers */
@@ -152,12 +152,109 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define NO_ACTION_MACRO
 //#define NO_ACTION_FUNCTION
 
+#define PS2_MOUSE_INIT_DELAY 2000
+#define BATTERY_PIN 9
+#define BATTERY_POLL 30000
+#define MAX_VOLTAGE 4.2
+#define MIN_VOLTAGE 3.2
+
+#ifndef __ASSEMBLER__ // assembler doesn't like enum in .h file
+enum led_sequence {
+  LED_IND_LINUX,
+  LED_IND_APPLE,
+  LED_IND_WINDOWS,
+  LED_IND_QWERTY,
+  LED_IND_ALT,
+  LED_IND_AUDIO,
+  LED_IND_BLUETOOTH,
+  LED_IND_USB,
+
+  LED_IND_BATTERY,
+  LED_IND_CAPSLOCK,
+  LED_IND_GUI,
+  LED_IND_FUN,
+  LED_IND_NUM,
+  LED_IND_PUNC,
+  LED_IND_EMOJI,
+  LED_IND_GREEK,
+
+  LED_BKSP,
+  LED_ENT,
+  LED_RSFT,
+  LED_RCTL,
+
+  LED_RALT,
+  LED_SLSH,
+  LED_SCLN,
+  LED_P,
+
+  LED_O,
+  LED_L,
+  LED_DOT,
+  LED_RGUI,
+
+  LED_GREEK,
+  LED_COMM,
+  LED_K,
+  LED_I,
+
+  LED_U,
+  LED_J,
+  LED_M,
+  LED_FUN,
+
+  LED_RSPC,
+  LED_N,
+  LED_HH,
+  LED_Y,
+
+  LED_TRACKPOINT3,
+  LED_TRACKPOINT2,
+  LED_TRACKPOINT1,
+
+  LED_T,
+  LED_G,
+  LED_B,
+  LED_LSPC,
+
+  LED_NUM,
+  LED_V,
+  LED_F,
+  LED_R,
+
+  LED_E,
+  LED_D,
+  LED_C,
+  LED_EMPTY,
+
+  LED_LGUI,
+  LED_X,
+  LED_S,
+  LED_W,
+
+  LED_Q,
+  LED_A,
+  LED_Z,
+  LED_LALT,
+
+  LED_LCTL,
+  LED_LSFT,
+  LED_ESC,
+  LED_TAB,
+
+  LED_TOTAL
+};
+
+#define RGB_DI_PIN B5
+#define RGBSPS_NUM LED_TOTAL
+#endif
+
 /* PS/2 mouse */
 #ifdef PS2_USE_BUSYWAIT
 #   define PS2_CLOCK_PORT  PORTD
 #   define PS2_CLOCK_PIN   PIND
 #   define PS2_CLOCK_DDR   DDRD
-#   define PS2_CLOCK_BIT   1
+#   define PS2_CLOCK_BIT   3
 #   define PS2_DATA_PORT   PORTD
 #   define PS2_DATA_PIN    PIND
 #   define PS2_DATA_DDR    DDRD
@@ -231,7 +328,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PS2_USART_RX_DATA       UDR1
 #define PS2_USART_ERROR         (UCSR1A & ((1<<FE1) | (1<<DOR1) | (1<<UPE1)))
 #define PS2_USART_RX_VECT       USART1_RX_vect
-#endif
-
-
 #endif
